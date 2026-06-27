@@ -1,13 +1,20 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from quiz import get_question
-from database import get_user_score, add_score
+from database import get_user_score, add_score,init_db
+from dotenv import load_dotenv
+import os
 
-app = Client("quiz_bot", bot_token="YOUR_BOT_TOKEN", api_id=12345, api_hash="your_api_hash")
+app = Client(
+    "quiz_238_bot",
+    bot_token=os.getenv("BOT_TOKEN"),
+    api_id=os.getenv("API_ID"),
+    api_hash=os.getenv("API_HASH"))
 
 @app.on_message(filters.command("start"))
 async def start_handler(client, message):
     await message.reply("Привет! Я квиз-бот. Напиши /quiz, чтобы начать игру.")
+    init_db()
 
 @app.on_message(filters.command("quiz"))
 async def quiz_handler(client, message):
